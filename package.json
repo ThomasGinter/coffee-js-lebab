@@ -10,10 +10,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@inquirer/prompts": "^7.3.2",
     "axios": "^1.7.9",
+    "decaffeinate-parser": "^23.0.1",
     "fs-extra": "^11.3.0",
     "glob": "^11.0.1",
-    "inquirer": "^12.4.2",
     "openai": "^4.86.1"
   }
 }
