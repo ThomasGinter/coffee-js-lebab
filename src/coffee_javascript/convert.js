@@ -119,6 +119,7 @@ const questions = [
 
 // Main function
 async function main() {
+    console.log('Welcome to the CoffeeScript to JavaScript converter');
     const llm = await select({
         message: 'Select the LLM to use (ensure LLM_API_KEY is set for your choice):',
         choices: [
@@ -148,10 +149,12 @@ async function main() {
         default: 'ES2023'
     });
     const caveats = await input({
-        message: 'Enter any additional caveats or instructions:'
+        message: 'Enter any additional caveats or instructions:',
+        default: 'Preserve the commonjs syntax for module exports where applicable.'
     });
     const inputPath = await input({
-        message: 'Enter the path to the CoffeeScript file or directory:'
+        message: 'Enter the path to the CoffeeScript file or directory:',
+        default: '/Users/tginter/dev/estateguru/eg/common/automatedReviews.coffee'
     });
 
     const answers = { sourceVersion, destVersion, caveats, inputPath };
@@ -165,9 +168,9 @@ async function main() {
         });
         translationPrompt = useExisting ?
             existingPrompt :
-            await generateTranslationPrompt(systemPrompt, answers, selectedLLM, model);
+            await generateTranslationPrompt(answers, selectedLLM, model);
     } else {
-        translationPrompt = await generateTranslationPrompt(systemPrompt, answers, selectedLLM, model);
+        translationPrompt = await generateTranslationPrompt(answers, selectedLLM, model);
     }
     fs.writeFileSync('user.md', translationPrompt);
     console.log('Translation prompt saved to user.md');
@@ -184,20 +187,11 @@ async function main() {
 }
 
 // Generate translation prompt
-async function generateTranslationPrompt(systemPrompt, answers, llmConfig, model) {
+async function generateTranslationPrompt(answers, llmConfig, model) {
     const metaPrompt = `
-${systemPrompt}
-
-Based on the following user input, generate a suitable translation prompt for converting CoffeeScript to JavaScript.
-
-User input:
-- Source language: ${answers.sourceVersion}
-- Destination language: ${answers.destVersion}
-- Additional caveats: ${answers.caveats}
-
-The translation prompt should be clear and specific, instructing the LLM on how to perform the translation accurately.
+Convert CoffeeScript ${answers.sourceVersion} to JavaScript ${answers.destVersion}.  ${answers.caveats}
   `;
-    return callLLM(metaPrompt, llmConfig, model);
+    return metaPrompt;
 }
 
 // Process directory
@@ -245,7 +239,7 @@ async function processFile(filePath, translationPrompt, llmConfig, model) {
 
     try {
         const ast = parse(code);
-        const topLevelNodes = ast.program.body;
+        const topLevelNodes = ast.body;
         if (topLevelNodes.length === 0) {
             console.log(`No top-level nodes found in ${filePath}, skipping.`);
             return;
