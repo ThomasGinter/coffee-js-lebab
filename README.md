@@ -1,4 +1,4 @@
-# grok-js-lebab
+# coffee-js-lebab
 
 This Node.js project uses Grok to modernize your codebase by converting older JavaScript or CoffeeScript files to modern JavaScript standards. It works on a directory level, creating a backup of the original files before performing conversions.
 
