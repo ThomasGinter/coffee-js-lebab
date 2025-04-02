@@ -37,4 +37,11 @@ module.exports = [
       'no-console': 'off',
     },
   },
+  {
+    "env": {
+        "node": true,
+        "es2023": true,
+        "browser": true
+    }
+  }
 ];

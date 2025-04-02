@@ -18,7 +18,7 @@ program
   .option('--preview', 'Preview conversion without writing files', false)
   .option('--lint', 'Lint files after conversion', false)
   .option('--fix', 'Automatically fix linting issues when possible', false)
-  .option('--eslint-config <path>', 'Path to ESLint config file', '.eslintrc.js')
+  .option('--eslint-config <path>', 'Path to ESLint config file', 'eslint.config.cjs')
   .parse(process.argv);
 
 const options = program.opts();
