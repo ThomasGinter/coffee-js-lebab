@@ -38,10 +38,10 @@ module.exports = [
     },
   },
   {
-    "env": {
-        "node": true,
-        "es2023": true,
-        "browser": true
+    env: {
+        node: true,
+        es2023: true,
+        browser: true
     }
   }
 ];
